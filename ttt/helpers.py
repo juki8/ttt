@@ -47,10 +47,32 @@ def check_win(L):
         elif L[0][2] == 2:
             return 2
 
-# Function to sanitize overall input
+# PRINT BOARDS
+def board(L):
+    ''' Takes a ttt game as a list of lists. 
+    Returns a graphical representation with 1=x, 2=o, 0=""
+    '''
+    print (3 * " ---")
+    p0 = "|   "
+    p1 = "| x "
+    p2 = "| o "
+
+    for I in L:
+        for i in I:
+            if i == 0:
+                print(p0, end='')
+            elif i == 1:
+                print(p1, end='')
+            elif i == 2:
+                print(p2, end='')
+        print("|")
+        print (3 * " ---")
+
+
+# SANITIZE INPUT
 def san(a):   
     '''Takes the user input and checks if valid 
-    (3 chars, 2 ints between 1 and 3 
+    (3 chars, 2 ints between 1 and 3). 
     Returns True if valid, False if not valid'''
 
     if len(a) != 3:
@@ -59,7 +81,7 @@ def san(a):
     else:
         return san_part(a[0]) and san_part(a[2])
 
-## FUNCTIONS TO SANITIZE INPUT
+## SANITIZE PARTIAL INPUT
 def san_part(a0):
     '''Checks if parts of the input are valid.
     Returns True if valid, False if not valid'''

@@ -1,4 +1,4 @@
-from helpers import san, check_win
+from helpers import san, check_win, board
 
 ## DEALING WITH INPUT // GAME SERVER
 
@@ -17,13 +17,13 @@ while True:
         break
     # Make sure that input is correct
     while san(a) == False:
-        a = input("Wrong input! Try again, Player A: Which case? - use: row,col: ")
+        a = input("Wrong input! \nTry again, Player A: Which case? - use: row,col: ")
         if a == "exit":
             break
     if san(a) == True:
     # check if field is taken
         while game[int(a[0])-1][int(a[2])-1] != 0:
-            a = input("Field taken! Try again, Player A: Which case? - use: row,col: ")
+            a = input("Field taken! \nTry again, Player A: Which case? - use: row,col: ")
     # Fill field and add to guesses
         if game[int(a[0])-1][int(a[2])-1] == 0:
             game[int(a[0])-1][int(a[2])-1] = 1
@@ -32,15 +32,15 @@ while True:
     # Checks wins
             if check_win(game) == 1:
                 print("Player A has won!!")
-                print(game)
+                board(game)
                 break
                 
             elif check_win(game) == 2:
                 print("Player B has won!!")
-                print(game)
+                board(game)
                 break
     
-        print(game)
+        board(game)
     
     # Check if fields are available
         if guesses == 9:
@@ -54,13 +54,13 @@ while True:
     
     # Make sure that input is correct
     while san(a) == False:
-        a = input("Wrong input! Try again, Player B: Which case? - use: row,col: ")
+        a = input("Wrong input! \nTry again, Player B: Which case? - use: row,col: ")
         if a == "exit":
             break
         
     if san(a) == True:
         while game[int(a[0])-1][int(a[2])-1] != 0:
-            a = input("Field taken! Try again, Player B: Which case? - use: row,col: ")
+            a = input("Field taken! \nTry again, Player B: Which case? - use: row,col: ")
         if game[int(a[0])-1][int(a[2])-1] == 0:
             game[int(a[0])-1][int(a[2])-1] = 2
             guesses += 1
@@ -68,13 +68,13 @@ while True:
     # Checks wins
             if check_win(game) == 1:
                 print("Player A has won!!")
-                print(game)
+                board(game)
                 break
             elif check_win(game) == 2:
                 print("Player B has won!!")
-                print(game)
+                board(game)
                 break
-        print(game)
+        board(game)
         
     # Check if fields are available
         if guesses == 9:
