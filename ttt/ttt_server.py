@@ -1,7 +1,6 @@
 from helpers import san, check_win, board
 
-## DEALING WITH INPUT // GAME SERVER
-
+## GAME SERVER
 # Starting board
 game = [[0, 0, 0],
 	[0, 0, 0],
