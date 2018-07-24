@@ -1,35 +1,4 @@
-## HELPER FUNCTIONS: 
-
-# Function to sanitize overall input
-def san(a):   
-    '''Takes the user input and checks if valid 
-    (3 chars, 2 ints between 1 and 3 
-    Returns True if valid, False if not valid'''
-
-    if len(a) != 3:
-#        print("Wrong input.")
-        return False
-    else:
-        return san_part(a[0]) and san_part(a[2])
-
-# Function to sanitize parts of the input
-def san_part(a0):
-    '''Checks if parts of the input are valid.
-    Returns True if valid, False if not valid'''
-    while True:
-       try:
-           a0 = int(a0) # checks if input is int
-       except ValueError: 
-#           print("Not a number!")
-           return False
-       else:
-           if a0 in range (1, 4): # checks if input in range
-               return True
-               break
-           else:
-#               print ('Try again.')
-               return False
-
+from helpers import san 
 
 ## DEALING WITH INPUT // GAME SERVER
 # Starting board
@@ -87,9 +56,3 @@ while True:
         if guesses == 9:
             print("all fields taken")
             break
-
-  
-    
-
-
-

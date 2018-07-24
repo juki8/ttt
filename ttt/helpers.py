@@ -1,4 +1,3 @@
-
 ## CHECK WINS (ex26)
 
 def check_win(L):
@@ -48,34 +47,31 @@ def check_win(L):
         elif L[0][2] == 2:
             print("2 has won")
 
-#    else: 
-#        print("no winner")
+# Function to sanitize overall input
+def san(a):   
+    '''Takes the user input and checks if valid 
+    (3 chars, 2 ints between 1 and 3 
+    Returns True if valid, False if not valid'''
 
+    if len(a) != 3:
+#        print("Wrong input.")
+        return False
+    else:
+        return san_part(a[0]) and san_part(a[2])
 
-#    # horizontal wins
-#    winner_a = (a1 == a2) and (a1 == a3)
-#    winner_b = (b1 == b2) and (b1 == b3)
-#    winner_c = (c1 == c2) and (c1 == c3)
-#    
-#    # horizontal wins indexed
-#    winner_a = (A[0] == A[1]) and (A[0] == A[2])
-#    winner_b = (B[0] == B[1]) and (B[0] == B[2])
-#    winner_c = (C[0] == C[1]) and (C[0] == C[2])    
-#    
-#    # vertical wins
-#    winner_1 = (a1 == b1) and (a1 == c1)
-#    winner_2 = (a2 == b2) and (a2 == c2)
-#    winner_3 = (a3 == b3) and (a3 == c3)
-#
-#    # vertical wins indexed
-#    winner_1 = (L[0][0] == L[1][0]) and (L[0][0] == L[2][0])
-#    winner_2 = (L[0][1] == L[1][1]) and (L[0][1] == L[2][1])
-#    winner_3 = (L[0][2] == L[1][2]) and (L[0][2] == L[2][2])
-#
-#    # diagonal wins
-#    winner_d1 = (a1 == b2) and (a1 == c3)
-#    winner_d2 = (a3 == b2) and (a3 == c1)
-#
-#    # diagonal wins indexed 
-#    winner_d1 = (L[0][0] == L[1][1]) and (L[0][0] == L[2][2])
-#    winner_d2 = (L[0][2]] == L[1][1]) and (L[0][2] == L[2][0])
+## FUNCTIONS TO SANITIZE INPUT
+def san_part(a0):
+    '''Checks if parts of the input are valid.
+    Returns True if valid, False if not valid'''
+    while True:
+       try:
+           a0 = int(a0) # checks if input is int
+       except ValueError: 
+#           print("Not a number!")
+           return False
+       else:
+           if a0 in range (1, 4): # checks if input in range
+               return True
+           else:
+#               print ('Try again.')
+               return False
