@@ -1,6 +1,7 @@
-from helpers import san 
+from helpers import san, check_win
 
 ## DEALING WITH INPUT // GAME SERVER
+
 # Starting board
 game = [[0, 0, 0],
 	[0, 0, 0],
@@ -9,36 +10,49 @@ game = [[0, 0, 0],
 guesses = 0
 
 while True:
-    # Ask player A for input
+   
+## Ask player A for input
     a = input("Player A: Which case? - use: row,col: ")
     if a == "exit":
         break
-    
+    # Make sure that input is correct
     while san(a) == False:
         a = input("Wrong input! Try again, Player A: Which case? - use: row,col: ")
         if a == "exit":
             break
     if san(a) == True:
-        # check field is taken
+    # check if field is taken
         while game[int(a[0])-1][int(a[2])-1] != 0:
             a = input("Field taken! Try again, Player A: Which case? - use: row,col: ")
-        # Fill field and add to guesses
+    # Fill field and add to guesses
         if game[int(a[0])-1][int(a[2])-1] == 0:
             game[int(a[0])-1][int(a[2])-1] = 1
             guesses += 1
+
+    # Checks wins
+            if check_win(game) == 1:
+                print("Player A has won!!")
+                print(game)
+                break
+                
+            elif check_win(game) == 2:
+                print("Player B has won!!")
+                print(game)
+                break
     
         print(game)
     
-        # Check if fields are available
+    # Check if fields are available
         if guesses == 9:
             print("all fields taken")
             break
     
-    # Ask player B for input
+## Ask player B for input
     a = input("Player B: Which case? - use: row,col: ")
     if a == "exit":
         break
     
+    # Make sure that input is correct
     while san(a) == False:
         a = input("Wrong input! Try again, Player B: Which case? - use: row,col: ")
         if a == "exit":
@@ -50,9 +64,19 @@ while True:
         if game[int(a[0])-1][int(a[2])-1] == 0:
             game[int(a[0])-1][int(a[2])-1] = 2
             guesses += 1
+    
+    # Checks wins
+            if check_win(game) == 1:
+                print("Player A has won!!")
+                print(game)
+                break
+            elif check_win(game) == 2:
+                print("Player B has won!!")
+                print(game)
+                break
         print(game)
         
-        # Check if fields are available
+    # Check if fields are available
         if guesses == 9:
             print("all fields taken")
             break

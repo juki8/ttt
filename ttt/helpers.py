@@ -9,43 +9,43 @@ def check_win(L):
     for I in L:
         if (I[0] == I[1]) and (I[0] == I[2]) == True:
             if I[0] == 1:
-                print("1 has won")
+                return 1
                 break
             elif I[0] == 2:
-                print("2 has won")
+                return 2
                 break
  
     # vertical wins
     if (L[0][0] == L[1][0]) and (L[0][0] == L[2][0]) == True:
         if L[0][0] == 1:
-            print("1 has won")
+            return 1
         elif L[0][0] == 2:
-            print("2 has won")
+            return 2
     
     elif (L[0][1] == L[1][1]) and (L[0][1] == L[2][1]) == True:
         if L[0][1] == 1:
-            print("1 has won")
+            return 1
         elif L[0][1] == 2:
-            print("2 has won")
+            return 2
 
     elif (L[0][2] == L[1][2]) and (L[0][2] == L[2][2]) == True:
         if L[0][2] == 1:
-            print("1 has won")
+            return 1
         elif L[0][2] == 2:
-            print("2 has won")
+            return 2
     
     # diagonal wins indexed 
     elif (L[0][0] == L[1][1]) and (L[0][0] == L[2][2]) == True:
         if L[0][0] == 1:
-            print("1 has won")
+            return 1
         elif L[0][0] == 2:
-            print("2 has won")  
+            return 2  
 
     elif (L[0][2] == L[1][1]) and (L[0][2] == L[2][0]) == True:
         if L[0][2] == 1:
-            print("1 has won")
+            return 1
         elif L[0][2] == 2:
-            print("2 has won")
+            return 2
 
 # Function to sanitize overall input
 def san(a):   
