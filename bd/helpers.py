@@ -50,8 +50,10 @@ def im_persons():
     
     # import JSON
     with open("dict.json", "r") as f:
-        datastore = json.loads(f.read())
-    
+        datastore = json.loads(f.read())    
+
+    # datastore = dict_months(datastore)
+
     # select keys
     keys = []
     for i in datastore.keys():
@@ -61,3 +63,70 @@ def im_persons():
     # iterate over keys and values to import 
     for i in range(len(datastore)):
         Person(keys[i], datastore[keys[i]])
+
+    print(datastore)
+
+    
+def dict_months(bd_dict):
+    
+    # Get dates
+    list_dates = []
+    for person in bd_dict:
+        list_dates.append(bd_dict[person])
+    print(list_dates)
+    
+    # Extract months    
+    list_months = []
+    for i in range(len(list_dates)):
+        list_months.append(list_dates[i][3:6])
+    print(list_months)
+    
+    # Change months names
+    list_monthnames = []
+    for i in range(len(list_months)):
+        if list_months[i] == "01.":
+            list_monthnames.append("January")
+        elif list_months[i] == "02.":
+            list_monthnames.append("February")
+        elif list_months[i] == "03.":
+            list_monthnames.append("March")
+        elif list_months[i] == "04.":
+            list_monthnames.append("April")
+        elif list_months[i] == "05.":
+            list_monthnames.append("May")
+        elif list_months[i] == "06.":
+            list_monthnames.append("June")    
+        elif list_months[i] == "07.":
+            list_monthnames.append("July")
+        elif list_months[i] == "08.":
+            list_monthnames.append("August")
+        elif list_months[i] == "09.":
+            list_monthnames.append("September")
+        elif list_months[i] == "10.":
+            list_monthnames.append("October")
+        elif list_months[i] == "11.":
+            list_monthnames.append("November")
+        elif list_months[i] == "12.":
+            list_monthnames.append("December")
+        
+    print(list_monthnames)
+
+    # Complete date with monthnames
+    list_newdates = []
+    for i in range(len(list_monthnames)):
+        list_newdates.append(list_dates[i][0:3] + " " + list_monthnames[i] + " " + list_dates[i][6:10])
+    print(list_newdates)
+
+    # Get keys
+    keys = []
+    for i in bd_dict.keys():
+        keys.append(i)
+    print(keys)
+    
+    # Update dict
+    for i in range(len(bd_dict)):
+        bd_dict[keys[i]] = list_newdates[i] # To output full dates
+#        bd_dict[keys[i]] = list_monthnames[i] # To output months only
+    print(bd_dict)
+    
+    return bd_dict
