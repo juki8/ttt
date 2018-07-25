@@ -1,13 +1,10 @@
-from helpers import Person, check
-
-# Settings
-bd_dict = {}
+from helpers import Person, check, create_dict, im_persons
 
 # Import persons
-jk = Person('Julius', '11.04.1983')
-pk = Person('Paula', '11.01.1986')
-ak = Person('Toni', '16.12.2013')
-lk = Person('Louise', '05.05.2017')
+im_persons()
+
+# Creact dict with helpers function
+create_dict()
 
 # Give names of everyone in dict
 print("Welcome to the birthday dictionary. We know the birthdays of: ")
