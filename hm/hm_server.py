@@ -1,4 +1,4 @@
-from helpers import ch_word, print_word, check_letter
+from helpers import ch_word, print_word, check_letter, suc
 ## GAME SETTINGS
 
 word = ch_word()
@@ -12,15 +12,11 @@ print(word)
 print("Start game!")
 while True: 
 
-    if len(guessed) == len(word):
-        print("Success! with " + str(guesses) + " guesses.")
-        break
-
     a = input("Please choose a letter!: ").upper()
     guesses += 1
     print(a)
 
-    if a == 'exit':
+    if a == 'EXIT':
         break
 
     # Checks if input is correct 
@@ -36,5 +32,14 @@ while True:
         print(guessed)
         print_word(word, guessed)
 
+        # Check if match is over
+        word_short = "".join(set(word))
+        print(len(word))
+        print(len(word_short))
+        print(len(guessed))
+        if len(word_short) == len(guessed):
+            print("Success! with " + str(guesses) + " guesses.")
+            break
+
     else:
-        print("Letter not in word. ")
+        print("Letter not in word. ")       
