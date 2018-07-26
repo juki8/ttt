@@ -2,6 +2,7 @@
 
 from ps1_partition import get_partitions
 import time
+import operator
 
 #================================
 # Part A: Transporting Space Cows
@@ -53,26 +54,28 @@ def greedy_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-  
-    # Dict aufteilen    
-    cow_values = list(cows.values())
-    cow_keys = list(cows.keys())  
-    print(cow_values)
-    print(cow_keys)
+    # sort dict as list
+    cows_sorted = sorted(cows.items(), key=operator.itemgetter(1), reverse=True)
+#    print(cows_sorted)
 
-    # Erster Trip
-    trip = []
-    trip_weight = []
-    for i in range(len(cow_keys)):
-        if cow_values[i] + sum(trip_weight) <= limit:
-            trip.append(cow_keys[i])
-            trip_weight.append(cow_values[i])
-            
-    print(trip)
-    print(trip_weight)
+    trips = []
+    cows_moved = []
     
-    # Entferne Werte
-
+    while len(cows_sorted) > len(cows_moved):
+        trip = []
+        trip_weight = []
+        for i in range(len(cows_sorted)):
+            if cows_sorted[i][0] not in cows_moved:
+                if cows_sorted[i][1] + sum(trip_weight) <= limit:
+                    trip.append(cows_sorted[i][0])
+                    trip_weight.append(cows_sorted[i][1])
+                    cows_moved.append(cows_sorted[i][0])
+#                    print("cows moved: " + str(len(cows_moved)))
+#        print(trip)
+#        print(trip_weight)
+        trips.append(trip)
+    print("Takes " + str(len(trips)) + " trips.")
+    return (trips)
 
 # Problem 2
 def brute_force_cow_transport(cows,limit=10):
@@ -128,6 +131,6 @@ limit=15
 print(cows)
 
 print(greedy_cow_transport(cows, limit))
-print(brute_force_cow_transport(cows, limit))
+#print(brute_force_cow_transport(cows, limit))
 
 
