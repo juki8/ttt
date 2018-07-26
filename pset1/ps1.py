@@ -1,5 +1,4 @@
 ###########################
-# 6.00.2x Problem Set 1: Space Cows 
 
 from ps1_partition import get_partitions
 import time
@@ -54,8 +53,25 @@ def greedy_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
-    pass
+  
+    # Dict aufteilen    
+    cow_values = list(cows.values())
+    cow_keys = list(cows.keys())  
+    print(cow_values)
+    print(cow_keys)
+
+    # Erster Trip
+    trip = []
+    trip_weight = []
+    for i in range(len(cow_keys)):
+        if cow_values[i] + sum(trip_weight) <= limit:
+            trip.append(cow_keys[i])
+            trip_weight.append(cow_values[i])
+            
+    print(trip)
+    print(trip_weight)
+    
+    # Entferne Werte
 
 
 # Problem 2
@@ -108,7 +124,7 @@ lines to print the result of your problem.
 """
 
 cows = load_cows("ps1_cow_data.txt")
-limit=100
+limit=15
 print(cows)
 
 print(greedy_cow_transport(cows, limit))
