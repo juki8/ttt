@@ -1,4 +1,7 @@
 class Person (object):
+    '''
+    Defines class with name and birthday
+    '''
     instances = []
     def __init__(self, name, bd):
         self.name = name
@@ -19,17 +22,31 @@ class Person (object):
 
 def check(a):
     '''
-    Checks if input a is name of an existing Person
+    Checks if input a is name of an existing Person.
+    Uses the Person class
+    Returns Birthday
     '''
     result = 0
     for person in Person.instances:
         if Person.get_name(person) == a:
             result += 1
+            print(Person.get_bd(person))
     if result == 0:
         print("Not in list")
-    elif result == 1:
-        print(Person.get_bd(person))
 
+def check_dict(a, b_dict):
+    '''
+    Checks if input a is name of an existing Person.
+    Uses the dict 
+    Returns Birthday
+    '''
+    result = 0
+    for person in b_dict:
+        if person == a:
+            result += 1
+            print(b_dict[a])    
+    if result == 0:
+        print("Not in list")        
 
 # Create dict
 import json
@@ -41,6 +58,7 @@ def create_dict():
     bd_dict = {}
     for person in Person.instances:
         Person.add_dict(person, bd_dict)
+    return bd_dict
     # Create JSON
     # with open("dict.json", "w") as f:
     #     json.dump(bd_dict, f)
@@ -52,34 +70,33 @@ def im_persons():
     with open("dict.json", "r") as f:
         datastore = json.loads(f.read())    
 
-    # datastore = dict_months(datastore)
+    datastore = dict_months(datastore)
 
     # select keys
     keys = []
     for i in datastore.keys():
         keys.append(i)
-    print(keys)
+    # print(keys)
     
     # iterate over keys and values to import 
     for i in range(len(datastore)):
         Person(keys[i], datastore[keys[i]])
 
-    print(datastore)
+    # print(datastore)
 
-    
 def dict_months(bd_dict):
     
     # Get dates
     list_dates = []
     for person in bd_dict:
         list_dates.append(bd_dict[person])
-    print(list_dates)
+    # print(list_dates)
     
     # Extract months    
     list_months = []
     for i in range(len(list_dates)):
         list_months.append(list_dates[i][3:6])
-    print(list_months)
+    # print(list_months)
     
     # Change months names
     list_monthnames = []
@@ -109,24 +126,23 @@ def dict_months(bd_dict):
         elif list_months[i] == "12.":
             list_monthnames.append("December")
         
-    print(list_monthnames)
+    # print(list_monthnames)
 
     # Complete date with monthnames
     list_newdates = []
     for i in range(len(list_monthnames)):
         list_newdates.append(list_dates[i][0:3] + " " + list_monthnames[i] + " " + list_dates[i][6:10])
-    print(list_newdates)
+    # print(list_newdates)
 
     # Get keys
     keys = []
     for i in bd_dict.keys():
         keys.append(i)
-    print(keys)
+    # print(keys)
     
     # Update dict
     for i in range(len(bd_dict)):
         bd_dict[keys[i]] = list_newdates[i] # To output full dates
 #        bd_dict[keys[i]] = list_monthnames[i] # To output months only
-    print(bd_dict)
-    
+    # print(bd_dict)
     return bd_dict
