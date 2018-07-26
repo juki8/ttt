@@ -154,12 +154,19 @@ def compare_cow_transport_algorithms():
     Returns:
     Does not return anything.
     """
+    time1 = time.time()
     greedy = greedy_cow_transport(cows, limit)
+    time2 = time.time()
     print("AW: Greedy takes " + str(len(greedy)) + " trips.")
+    time_greedy = (time2-time1)*1000.0
+    print(str(time_greedy) + " ms.")
     
+    time1 = time.time()
     brute = brute_force_cow_transport(cows, limit)
+    time2 = time.time()
     print("AW: Brute Force takes " + str(len(brute)) + " trips.")
-    
+    time_brute = (time2-time1)*1000.0
+    print(str(time_brute) + " ms.")
     
 #    
 #    def timing(f):
