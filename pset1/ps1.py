@@ -70,7 +70,7 @@ def greedy_cow_transport(cows,limit=10):
                     cows_moved.append(cows_sorted[i][0])
 
         trips.append(trip)
-#    print("Takes " + str(len(trips)) + " trips.")
+    print("Greedy takes " + str(len(trips)) + " trips.")
     return trips
 
 # Problem 2
@@ -94,9 +94,51 @@ def brute_force_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
-    pass
+    cows_sorted = sorted(cows.items(), key=operator.itemgetter(1), reverse=True)
+    l = list(get_partitions(cows_sorted))
+#    print(" l = all partitions: ")
+#    print(l)
+    
+    # Check possible trips
+    l_pos = []
+    
+    # checks trips in list
+    for trips in l: 
+        # checks ships in each trips
+        ships = []
+        for ship in trips:      
+            # accesses individual cow
+            ship_weight = []
+            for i in ship:
+                ship_weight.append(i[1])
+            ships.append(sum(ship_weight))
+        if all(ship <= limit for ship in ships):
+            l_pos.append(trips)
 
+    # Remove potential duplicates
+    trips = []
+    for trip in l_pos:
+        if trip not in trips:
+            trips.append(trip)
+#    print("trips: ")
+#    print(trips)
+            
+    # Sort trip
+    trips.sort(key=len)
+#    print("trips sorted: ")
+#    print(trips)
+    print("Brute Force takes " + str(len(trips[0])) + " trips.")
+    
+    # Remove tuples and weight
+    trips_ = []
+    for ship in trips[0]:
+        ship_ = []
+        for cow in ship:
+            ship_.append(cow[0])
+        trips_.append(ship_)
+        
+    return trips_
+    
         
 # Problem 3
 def compare_cow_transport_algorithms():
@@ -112,8 +154,25 @@ def compare_cow_transport_algorithms():
     Returns:
     Does not return anything.
     """
-    # TODO: Your code here
-    pass
+    greedy = greedy_cow_transport(cows, limit)
+    print("AW: Greedy takes " + str(len(greedy)) + " trips.")
+    
+    brute = brute_force_cow_transport(cows, limit)
+    print("AW: Brute Force takes " + str(len(brute)) + " trips.")
+    
+    
+#    
+#    def timing(f):
+#    def wrap(*args):
+#        time1 = time.time()
+#        ret = f(*args)
+#        time2 = time.time()
+#        print('{:s} function took {:.3f} ms'.format(f.__name__, (time2-time1)*1000.0))
+#
+#        return ret
+#    return wrap
+#    
+#    
 
 
 """
@@ -123,10 +182,8 @@ lines to print the result of your problem.
 """
 
 cows = load_cows("ps1_cow_data.txt")
-limit=100
+limit=10
 print(cows)
 
 print(greedy_cow_transport(cows, limit))
-#print(brute_force_cow_transport(cows, limit))
-
-
+print(brute_force_cow_transport(cows, limit))
