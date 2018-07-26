@@ -56,8 +56,6 @@ def greedy_cow_transport(cows,limit=10):
     """
     # sort dict as list
     cows_sorted = sorted(cows.items(), key=operator.itemgetter(1), reverse=True)
-#    print(cows_sorted)
-
     trips = []
     cows_moved = []
     
@@ -70,12 +68,10 @@ def greedy_cow_transport(cows,limit=10):
                     trip.append(cows_sorted[i][0])
                     trip_weight.append(cows_sorted[i][1])
                     cows_moved.append(cows_sorted[i][0])
-#                    print("cows moved: " + str(len(cows_moved)))
-#        print(trip)
-#        print(trip_weight)
+
         trips.append(trip)
-    print("Takes " + str(len(trips)) + " trips.")
-    return (trips)
+#    print("Takes " + str(len(trips)) + " trips.")
+    return trips
 
 # Problem 2
 def brute_force_cow_transport(cows,limit=10):
@@ -127,7 +123,7 @@ lines to print the result of your problem.
 """
 
 cows = load_cows("ps1_cow_data.txt")
-limit=15
+limit=100
 print(cows)
 
 print(greedy_cow_transport(cows, limit))
