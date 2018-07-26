@@ -5,7 +5,6 @@ im_persons()
 
 # Creact dict via helpers function
 bd_dict = create_dict()
-#print(bd_dict)
 
 # Give names of everyone in dict
 print("Welcome to the birthday dictionary. We know the birthdays of: ")

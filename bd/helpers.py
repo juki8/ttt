@@ -1,3 +1,6 @@
+from collections import Counter
+import json
+
 class Person (object):
     '''
     Defines class with name and birthday
@@ -49,7 +52,6 @@ def check_dict(a, b_dict):
         print("Not in list")        
 
 # Create dict
-import json
 def create_dict():
     '''
     Creates dict from Person instances.
@@ -69,8 +71,9 @@ def im_persons():
     # import JSON
     with open("dict.json", "r") as f:
         datastore = json.loads(f.read())    
-
-    datastore = dict_months(datastore)
+    print(datastore)
+    datastore = dict_months(datastore, 0)
+    print(datastore)
 
     # select keys
     keys = []
@@ -82,21 +85,23 @@ def im_persons():
     for i in range(len(datastore)):
         Person(keys[i], datastore[keys[i]])
 
-    # print(datastore)
-
-def dict_months(bd_dict):
-    
+def dict_months(bd_dict, out):
+    '''
+    Transforms dates in months. Takes list and output form as two inputs: 
+    input is date format: dd.mm.yyyy
+    output is date format: dd. month yyyy
+    output options: 0 = "fulldate" or 1 = "month only"
+    return updated dictionary.  
+    '''
     # Get dates
     list_dates = []
     for person in bd_dict:
         list_dates.append(bd_dict[person])
-    # print(list_dates)
     
     # Extract months    
     list_months = []
     for i in range(len(list_dates)):
         list_months.append(list_dates[i][3:6])
-    # print(list_months)
     
     # Change months names
     list_monthnames = []
@@ -125,24 +130,40 @@ def dict_months(bd_dict):
             list_monthnames.append("November")
         elif list_months[i] == "12.":
             list_monthnames.append("December")
-        
-    # print(list_monthnames)
 
     # Complete date with monthnames
     list_newdates = []
     for i in range(len(list_monthnames)):
         list_newdates.append(list_dates[i][0:3] + " " + list_monthnames[i] + " " + list_dates[i][6:10])
-    # print(list_newdates)
 
     # Get keys
     keys = []
     for i in bd_dict.keys():
         keys.append(i)
-    # print(keys)
-    
-    # Update dict
-    for i in range(len(bd_dict)):
-        bd_dict[keys[i]] = list_newdates[i] # To output full dates
-#        bd_dict[keys[i]] = list_monthnames[i] # To output months only
-    # print(bd_dict)
+     
+    # Update dict 
+    # for "fullmonth output"
+    if out == 0:            
+        for i in range(len(bd_dict)):
+            bd_dict[keys[i]] = list_newdates[i] # To output full dates
+    # for "month-only output"
+    if out == 1:            
+        for i in range(len(bd_dict)):
+            bd_dict[keys[i]] = list_monthnames[i] # To output months only 
+
     return bd_dict
+
+def month_count(b_dict):
+    ''' Counts how many birthdays per month.
+        Takes dict in format dd.mm.yyyy as input.
+        Returns counter dict.
+    '''
+    D = dict_months(b_dict, 1)
+    L = []
+    for person in D:
+        L.append(D[person])
+    c = dict(Counter(L))
+    return c
+
+test = {'Julius': '11.04.1983', 'Paula': '11.04.1986', 'Toni': '16.12.2013', 'Louise': '05.05.2017', 'Lisa': '02.03.1979'}
+
