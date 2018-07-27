@@ -82,9 +82,10 @@ class RectangularRoom(object):
         width: an integer > 0
         height: an integer > 0
         """
+        
         self.width = width
         self.height = height
-        tilesClean = []
+        self.tilesClean = []
         
     
     def cleanTileAtPosition(self, pos):
@@ -95,9 +96,11 @@ class RectangularRoom(object):
 
         pos: a Position
         """
-        x = Position.getX(pos)
-        y = Position.getY(pos)
-        tilesClean.append(x, y)
+        x = math.floor(Position.getX(pos))
+        y = math.floor(Position.getY(pos))
+        
+        if (x, y) not in self.tilesClean:
+            self.tilesClean.append((x, y))
         
 
     def isTileCleaned(self, m, n):
@@ -110,7 +113,11 @@ class RectangularRoom(object):
         n: an integer
         returns: True if (m, n) is cleaned, False otherwise
         """
-        raise NotImplementedError
+        
+        if (math.floor(m), math.floor(n)) in self.tilesClean:
+            return True
+        else: 
+            return False      
     
     def getNumTiles(self):
         """
@@ -118,23 +125,24 @@ class RectangularRoom(object):
 
         returns: an integer
         """
-        raise NotImplementedError
-
+        return self.height * self.width
+        
     def getNumCleanedTiles(self):
         """
         Return the total number of clean tiles in the room.
 
         returns: an integer
         """
-        raise NotImplementedError
-
+        return len(self.tilesClean)
+        
     def getRandomPosition(self):
         """
         Return a random position inside the room.
 
         returns: a Position object.
         """
-        raise NotImplementedError
+        return Position(random.uniform(0, self.width), 
+                        random.uniform(0, self.height))
 
     def isPositionInRoom(self, pos):
         """
@@ -143,7 +151,10 @@ class RectangularRoom(object):
         pos: a Position object.
         returns: True if pos is in the room, False otherwise.
         """
-        raise NotImplementedError
+        return Position.getX(pos) >= 0 and Position.getX(pos) < self.width and Position.getY(pos) < self.height and Position.getY(pos) >= 0 
+
+    def __str__(self):
+        return "RectangularRoom with size: " + str(self.width) + " | " + str(self.height) + ". Cleaned tiles: " + str(self.tilesClean)
 
 
 # === Problem 2
