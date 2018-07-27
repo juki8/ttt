@@ -82,7 +82,10 @@ class RectangularRoom(object):
         width: an integer > 0
         height: an integer > 0
         """
-        raise NotImplementedError
+        self.width = width
+        self.height = height
+        tilesClean = []
+        
     
     def cleanTileAtPosition(self, pos):
         """
@@ -92,7 +95,10 @@ class RectangularRoom(object):
 
         pos: a Position
         """
-        raise NotImplementedError
+        x = Position.getX(pos)
+        y = Position.getY(pos)
+        tilesClean.append(x, y)
+        
 
     def isTileCleaned(self, m, n):
         """
