@@ -2,6 +2,7 @@
 
 import math
 import random
+random.seed(0)
 
 import ps2_visualize
 import pylab
@@ -246,21 +247,39 @@ class StandardRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        pos = self.getRobotPosition()
-        angle = self.getRobotDirection()
+#        oldPos = self.getRobotPosition()
+##        self.room.cleanTileAtPosition(oldPos)
+#        #Update position
+#        oldDir = self.getRobotDirection()
+        
+#        newPosUnchecked = oldPos.getNewPosition(oldDir, self.speed)
+#        if self.room.isPositionInRoom(newPosUnchecked) == True:    
+#            self.setRobotPosition(newPosUnchecked)
+#        else:
+#            self.setRobotDirection(random.randint(0, 359))
+#        #CleanTiles
+#        newPosChecked = self.getRobotPosition()
+#        self.room.cleanTileAtPosition(newPosChecked)  
+
+        oldPos = self.getRobotPosition()
+        oldDir = self.getRobotDirection()
         # get new position
-        posNew = pos.getNewPosition(angle, self.speed)
+        posNew = oldPos.getNewPosition(oldDir, self.speed)
         
         # check if pos2 is in room
-        if self.room.isPositionInRoom(posNew):
+        if self.room.isPositionInRoom(posNew) == True:
         # Update position
             self.setRobotPosition(posNew)
+        else: 
+            self.setRobotDirection(random.randint(0, 360))
+
+
         # Mark tile as cleaned
             self.room.cleanTileAtPosition(posNew)
         # if not in room, change to random direction and try again
         else: 
             self.angle = random.randint(0, 360)
-            self.updatePositionAndClean()
+            
             
 # Uncomment this line to see your implementation of StandardRobot in action!
 #testRobotMovement(StandardRobot, RectangularRoom)
@@ -284,10 +303,6 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     robot_type: class of robot to be instantiated (e.g. StandardRobot or
                 RandomWalkRobot)
     """
-    # Step 1: num_trials = 1
-    
-    timeCounter = 0
-    
     # initiate room
     room = RectangularRoom(width, height)
     
@@ -296,16 +311,55 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     for i in range(num_robots):
         robots.append(robot_type(room, speed))
     
-    while True:
-        for robot in robots:
-            robot.updatePositionAndClean()
-        timeCounter += 1
-        # check cleaning coverage and return result 
-        if room.getNumCleanedTiles() / room.getNumTiles >= min_coverage: 
-            return timeCounter
+    # Start trial:
+    timeCounters = []
+    
+    for trial in range(num_trials):
+#        anim = ps2_visualize.RobotVisualization(num_robots, width, height)
+        timeCounter = 0
+        
+        while room.getNumCleanedTiles() / room.getNumTiles() < min_coverage:
+            timeCounter += 1
+#            anim.update(room, robots)
+            for robot in robots:
+                room.cleanTileAtPosition(robot.getRobotPosition())
+                robot.updatePositionAndClean()
+            if (room.getNumCleanedTiles() / room.getNumTiles()) >= min_coverage:
+                timeCounters.append(timeCounter)
+#        anim.done()
+        room.tilesClean = []
+
+#    print("timeCounters: ")
+#    print(timeCounters)
+#    print("len timeCounters: ")
+#    print(len(timeCounters))
+#    print("num_trials: ")
+#    print(num_trials)
+#    print("return: ")
+    
+    return sum(timeCounters)/num_trials
+
+##Test case
+#
+speedT = 1
+widthT = 5
+heightT = 5
+min_coverageT = 1
+num_trialsT = 100
+numRobotsT = 1
+robot_type1 = StandardRobot
+#robot_type2 = RandomWalkRobot
+#
+##print('Single Simulation:  ' + str(runSingleSimulation(speedT, widthT, heightT, min_coverageT)))
+##print(str(num_trialsT) + ' Simulations with 1 robot:  ' + str(runSingleSimulationTrials(speedT, widthT, heightT, min_coverageT, num_trialsT)))
+##print(str(num_trialsT) + ' Simulations with ' + str(numRobotsT) + ' robots:  ' + str(runSimulationStandard(numRobotsT, speedT, widthT, heightT, min_coverageT, num_trialsT)))
+print(str(num_trialsT) + ' Simulations with ' + str(numRobotsT) + ' robots of type StandardRobot:  ' + str(runSimulation(numRobotsT, speedT, widthT, heightT, min_coverageT, num_trialsT, StandardRobot)))
+#print(str(num_trialsT) + ' Simulations with ' + str(numRobotsT) + ' robots of type RandomWalkRobot:  ' + str(runSimulation(numRobotsT, speedT, widthT, heightT, min_coverageT, num_trialsT, RandomWalkRobot)))
+
+
 
 # Uncomment this line to see how much your simulation takes on average
-#print(runSimulation(1, 1.0, 10, 10, 0.75, 30, StandardRobot))
+#print(runSimulation(1, 1.0, 5, 5, 1, 50, StandardRobot))
 
 
 # === Problem 5
