@@ -159,7 +159,6 @@ class RectangularRoom(object):
                 " | " + str(self.height) + ". Cleaned tiles: " + \
                 str(self.tilesClean)
 
-
 # === Problem 2
 class Robot(object):
     """
@@ -182,8 +181,11 @@ class Robot(object):
         """
         self.room = room
         self.speed = speed
-        self.position = room.getRandomPosition()
+        pos = room.getRandomPosition()
+        self.position = pos
         self.angle = random.randint(0, 360)        
+        # Clean tile at current position
+        self.room.cleanTileAtPosition(pos)
 
     def getRobotPosition(self):
         """
@@ -244,11 +246,24 @@ class StandardRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
-
-
+        pos = self.getRobotPosition()
+        angle = self.getRobotDirection()
+        # get new position
+        posNew = pos.getNewPosition(angle, self.speed)
+        
+        # check if pos2 is in room
+        if self.room.isPositionInRoom(posNew):
+        # Update position
+            self.setRobotPosition(posNew)
+        # Mark tile as cleaned
+            self.room.cleanTileAtPosition(posNew)
+        # if not in room, change to random direction and try again
+        else: 
+            self.angle = random.randint(0, 360)
+            self.updatePositionAndClean()
+            
 # Uncomment this line to see your implementation of StandardRobot in action!
-##testRobotMovement(StandardRobot, RectangularRoom)
+#testRobotMovement(StandardRobot, RectangularRoom)
 
 
 # === Problem 4
