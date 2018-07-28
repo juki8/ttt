@@ -247,39 +247,20 @@ class StandardRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-#        oldPos = self.getRobotPosition()
-##        self.room.cleanTileAtPosition(oldPos)
-#        #Update position
-#        oldDir = self.getRobotDirection()
-        
-#        newPosUnchecked = oldPos.getNewPosition(oldDir, self.speed)
-#        if self.room.isPositionInRoom(newPosUnchecked) == True:    
-#            self.setRobotPosition(newPosUnchecked)
-#        else:
-#            self.setRobotDirection(random.randint(0, 359))
-#        #CleanTiles
-#        newPosChecked = self.getRobotPosition()
-#        self.room.cleanTileAtPosition(newPosChecked)  
-
         oldPos = self.getRobotPosition()
         oldDir = self.getRobotDirection()
         # get new position
         posNew = oldPos.getNewPosition(oldDir, self.speed)
         
         # check if pos2 is in room
-        if self.room.isPositionInRoom(posNew) == True:
+        if self.room.isPositionInRoom(posNew):
         # Update position
             self.setRobotPosition(posNew)
-        else: 
-            self.setRobotDirection(random.randint(0, 360))
-
-
         # Mark tile as cleaned
             self.room.cleanTileAtPosition(posNew)
         # if not in room, change to random direction and try again
         else: 
             self.angle = random.randint(0, 360)
-            
             
 # Uncomment this line to see your implementation of StandardRobot in action!
 #testRobotMovement(StandardRobot, RectangularRoom)
@@ -326,6 +307,8 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
                 robot.updatePositionAndClean()
             if (room.getNumCleanedTiles() / room.getNumTiles()) >= min_coverage:
                 timeCounters.append(timeCounter)
+            else:
+                continue
 #        anim.done()
         room.tilesClean = []
 
@@ -341,12 +324,12 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
 
 ##Test case
 #
-speedT = 1
-widthT = 5
-heightT = 5
-min_coverageT = 1
+speedT = 2
+widthT = 10
+heightT = 12
+min_coverageT = 0.96
 num_trialsT = 100
-numRobotsT = 1
+numRobotsT = 3
 robot_type1 = StandardRobot
 #robot_type2 = RandomWalkRobot
 #
