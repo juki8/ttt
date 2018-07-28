@@ -298,12 +298,11 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     for trial in range(num_trials):
 #        anim = ps2_visualize.RobotVisualization(num_robots, width, height)
         timeCounter = 0
-        
-        while room.getNumCleanedTiles() / room.getNumTiles() < min_coverage:
+        while (room.getNumCleanedTiles() / room.getNumTiles()) < min_coverage:
             timeCounter += 1
 #            anim.update(room, robots)
             for robot in robots:
-                room.cleanTileAtPosition(robot.getRobotPosition())
+#                room.cleanTileAtPosition(robot.getRobotPosition())
                 robot.updatePositionAndClean()
             if (room.getNumCleanedTiles() / room.getNumTiles()) >= min_coverage:
                 timeCounters.append(timeCounter)
@@ -320,7 +319,7 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
 #    print(num_trials)
 #    print("return: ")
     
-    return sum(timeCounters)/num_trials
+    return sum(timeCounters)/len(timeCounters)
 
 ##Test case
 #
