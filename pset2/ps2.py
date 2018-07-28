@@ -230,7 +230,6 @@ class Robot(object):
         """
         raise NotImplementedError # don't change this!
 
-
 # === Problem 3
 class StandardRobot(Robot):
     """
@@ -295,11 +294,11 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     # Start trial:
     timeCounters = [] 
     for trial in range(num_trials):
-        anim = ps2_visualize.RobotVisualization(num_robots, width, height)
+#        anim = ps2_visualize.RobotVisualization(num_robots, width, height)
         timeCounter = 0
         while (room.getNumCleanedTiles() / room.getNumTiles()) < min_coverage:
             timeCounter += 1
-            anim.update(room, robots)
+#            anim.update(room, robots)
             for robot in robots:
 #                room.cleanTileAtPosition(robot.getRobotPosition())
                 robot.updatePositionAndClean()
@@ -307,7 +306,7 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
                 timeCounters.append(timeCounter)
             else:
                 continue
-        anim.done()
+#        anim.done()
         room.tilesClean = []
     
     return sum(timeCounters)/len(timeCounters)
@@ -329,11 +328,8 @@ robot_type2 = RandomWalkRobot
 print(str(num_trialsT) + ' Simulations with ' + str(numRobotsT) + ' robots of type StandardRobot:  ' + str(runSimulation(numRobotsT, speedT, widthT, heightT, min_coverageT, num_trialsT, StandardRobot)))
 print(str(num_trialsT) + ' Simulations with ' + str(numRobotsT) + ' robots of type RandomWalkRobot:  ' + str(runSimulation(numRobotsT, speedT, widthT, heightT, min_coverageT, num_trialsT, RandomWalkRobot)))
 
-
-
 # Uncomment this line to see how much your simulation takes on average
 #print(runSimulation(1, 1.0, 5, 5, 1, 50, StandardRobot))
-
 
 # === Problem 5
 class RandomWalkRobot(Robot):
