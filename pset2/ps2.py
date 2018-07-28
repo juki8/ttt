@@ -293,14 +293,13 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
         robots.append(robot_type(room, speed))
     
     # Start trial:
-    timeCounters = []
-    
+    timeCounters = [] 
     for trial in range(num_trials):
-#        anim = ps2_visualize.RobotVisualization(num_robots, width, height)
+        anim = ps2_visualize.RobotVisualization(num_robots, width, height)
         timeCounter = 0
         while (room.getNumCleanedTiles() / room.getNumTiles()) < min_coverage:
             timeCounter += 1
-#            anim.update(room, robots)
+            anim.update(room, robots)
             for robot in robots:
 #                room.cleanTileAtPosition(robot.getRobotPosition())
                 robot.updatePositionAndClean()
@@ -308,16 +307,8 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
                 timeCounters.append(timeCounter)
             else:
                 continue
-#        anim.done()
+        anim.done()
         room.tilesClean = []
-
-#    print("timeCounters: ")
-#    print(timeCounters)
-#    print("len timeCounters: ")
-#    print(len(timeCounters))
-#    print("num_trials: ")
-#    print(num_trials)
-#    print("return: ")
     
     return sum(timeCounters)/len(timeCounters)
 
@@ -327,16 +318,16 @@ speedT = 2
 widthT = 10
 heightT = 12
 min_coverageT = 0.96
-num_trialsT = 100
+num_trialsT = 1
 numRobotsT = 3
-robot_type1 = StandardRobot
-#robot_type2 = RandomWalkRobot
+#robot_type1 = StandardRobot
+robot_type2 = RandomWalkRobot
 #
 ##print('Single Simulation:  ' + str(runSingleSimulation(speedT, widthT, heightT, min_coverageT)))
 ##print(str(num_trialsT) + ' Simulations with 1 robot:  ' + str(runSingleSimulationTrials(speedT, widthT, heightT, min_coverageT, num_trialsT)))
 ##print(str(num_trialsT) + ' Simulations with ' + str(numRobotsT) + ' robots:  ' + str(runSimulationStandard(numRobotsT, speedT, widthT, heightT, min_coverageT, num_trialsT)))
 print(str(num_trialsT) + ' Simulations with ' + str(numRobotsT) + ' robots of type StandardRobot:  ' + str(runSimulation(numRobotsT, speedT, widthT, heightT, min_coverageT, num_trialsT, StandardRobot)))
-#print(str(num_trialsT) + ' Simulations with ' + str(numRobotsT) + ' robots of type RandomWalkRobot:  ' + str(runSimulation(numRobotsT, speedT, widthT, heightT, min_coverageT, num_trialsT, RandomWalkRobot)))
+print(str(num_trialsT) + ' Simulations with ' + str(numRobotsT) + ' robots of type RandomWalkRobot:  ' + str(runSimulation(numRobotsT, speedT, widthT, heightT, min_coverageT, num_trialsT, RandomWalkRobot)))
 
 
 
@@ -357,8 +348,19 @@ class RandomWalkRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
-
+        oldPos = self.getRobotPosition()
+        oldDir = self.getRobotDirection()
+        # get new position
+        posNew = oldPos.getNewPosition(oldDir, self.speed)
+        
+        # check if pos2 is in room
+        if self.room.isPositionInRoom(posNew):
+        # Update position
+            self.setRobotPosition(posNew)
+        # Mark tile as cleaned
+            self.room.cleanTileAtPosition(posNew)
+        self.angle = random.randint(0, 360)
+        
 
 def showPlot1(title, x_label, y_label):
     """
