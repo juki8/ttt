@@ -1,1 +1,1 @@
-"# ttt" 
+some python finger exercises
