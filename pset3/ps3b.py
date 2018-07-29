@@ -56,7 +56,7 @@ class SimpleVirus(object):
         returns: True with probability self.getClearProb and otherwise returns
         False.
         """
-        return random.random() < self.getClearProb()
+        return random.random() <= self.getClearProb()
     
     def reproduce(self, popDensity):
         """
@@ -77,10 +77,11 @@ class SimpleVirus(object):
         maxBirthProb and clearProb values as this virus. Raises a
         NoChildException if this virus particle does not reproduce.               
         """
-        if random.random() < (self.getMaxBirthProb() * (1 - popDensity)):
+        
+        if random.random() <= (self.getMaxBirthProb() * (1 - popDensity)):
             return SimpleVirus(self.getMaxBirthProb(), self.getClearProb())
         else: 
-            pass
+            raise NoChildException ("KEine Kidner")
 
 
 class Patient(object):
@@ -145,49 +146,48 @@ class Patient(object):
             if virus != None:
                 if not virus.doesClear():
                     virusesNotDead.append(virus)
-        print(virusesNotDead)
         
         # update of popDensity               
         popDensity = len(virusesNotDead) / self.getMaxPop()
-        print(popDensity)
         
         # reproduce viruses with popDensity
         virusesNew = virusesNotDead[:]
-        if popDensity < 1:
+        if popDensity < 1:    
             for virus in virusesNotDead:
-                a = virus.reproduce(popDensity)
-                virusesNew.append(a)
-        
+                try: 
+                    a = virus.reproduce(popDensity)
+                    if len(virusesNew) < self.getMaxPop():
+                        virusesNew.append(a)             
+                except NoChildException:
+                    continue
         # Update viruses in patient
         self.viruses = []
         self.viruses = virusesNew
         
         # returns updated virus population (an integer)
-        print(len(virusesNotDead))
-        print(len(self.viruses))
         return self.getTotalPop()
 
-## Testcase
-SV = SimpleVirus(0.9, 0.9)
-print(SV)
-print(SV.getMaxBirthProb())
-print(SV.getClearProb())
-print(SV.doesClear())
-S2 = SV.reproduce(0.9)
-print(S2)
-
-print("patient: ")
-P1 = Patient([SV, S2], 100)
-print(P1.getViruses())
-print(P1.getMaxPop())
-print(P1.getTotalPop())
-print("update: ")
-P1.update()
-print("Updated P1")
-print(P1.getViruses())
-print(P1.getMaxPop())
-print(P1.getTotalPop())
-
+### Testcase
+#SV = SimpleVirus(0.97, 0.96)
+#print(SV)
+#print(SV.getMaxBirthProb())
+#print(SV.getClearProb())
+#print(SV.doesClear())
+#S2 = SV.reproduce(0.01)
+#print(S2)
+#
+#print("patient: ")
+#P1 = Patient([SV, S2], 100)
+#print(P1.getViruses())
+#print(P1.getMaxPop())
+#print(P1.getTotalPop())
+#print("update: ")
+#P1.update()
+#print("Updated P1")
+#print(P1.getViruses())
+#print(P1.getMaxPop())
+#print(P1.getTotalPop())
+#
 
 # PROBLEM 2
 #
