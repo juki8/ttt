@@ -3,6 +3,7 @@
 import random
 random.seed(0)
 import pylab
+from collections import defaultdict
 
 ''' 
 Begin helper code
@@ -207,9 +208,51 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
     numTrials: number of simulation runs to execute (an integer)
     """
 
-    # TODO
+    ## Settings, counters etc.
+    timesteps = 5
+    
+    # initiate viruses
+    virusesStart = []
+    for i in range(numViruses):
+        a = SimpleVirus(maxBirthProb, clearProb)
+        virusesStart.append(a)
+    
+    ##  loop for numTrials trials
+#    results = []
+    resultsDic = defaultdict(int)
+    for i in range(numTrials):
+        # initiate patient
+        p = Patient(virusesStart, maxPop)
+
+        # one trial with dict structure
+        for i in range(timesteps):
+            p.update()
+            resultsDic[i] += p.getTotalPop()
+
+    for i in range(timesteps):
+        resultsDic[i] = resultsDic[i] / numTrials
+    resultsDic = dict(resultsDic)
+    print(resultsDic)
+        
+        # one trial with list structure showing results for individual trial
+#        result = []
+#        for i in range(timesteps):
+#            p.update()
+#            result.append(p.getTotalPop())
+#        results.append(result)
+
+    # plotting
 
 
+### Testcase
+
+numViruses = 100
+maxPop = 1000
+maxBirthProb = 0.7
+clearProb = 0.1
+numTrials = 10
+
+simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb, numTrials)
 
 #
 # PROBLEM 3
