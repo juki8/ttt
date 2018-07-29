@@ -1,6 +1,7 @@
 # Problem Set 3: Simulating the Spread of Disease and Virus Population Dynamics 
 
 import random
+random.seed(0)
 import pylab
 
 ''' 
@@ -36,8 +37,6 @@ class SimpleVirus(object):
         """
         self.maxBirthProb = maxBirthProb
         self.clearProb = clearProb
-        SimpleVirus.instances.append(self)
-
 
     def getMaxBirthProb(self):
         """
@@ -80,6 +79,9 @@ class SimpleVirus(object):
         """
         if random.random() < (self.getMaxBirthProb() * (1 - popDensity)):
             return SimpleVirus(self.getMaxBirthProb(), self.getClearProb())
+        else: 
+            pass
+
 
 class Patient(object):
     """
@@ -97,7 +99,6 @@ class Patient(object):
 
         maxPop: the maximum virus population for this patient (an integer)
         """
-
         self.viruses = viruses
         self.maxPop = maxPop
 
@@ -138,26 +139,56 @@ class Patient(object):
         returns: The total virus population at the end of the update (an
         integer)
         """
-
-        # Determine whether each virus particle survives and updates the list
-        # of virus particles accordingly.   
-
-        virusesNew = []
+        # List of viruses not cleared
+        virusesNotDead = []
         for virus in self.viruses:
-            if virus.doesClear():
-                virusesNew.append(virus.reproduce())
+            if virus != None:
+                if not virus.doesClear():
+                    virusesNotDead.append(virus)
+        print(virusesNotDead)
         
-        #- The current population density is calculated. This population density
-        #value is used until the next call to update()                   
+        # update of popDensity               
+        popDensity = len(virusesNotDead) / self.getMaxPop()
+        print(popDensity)
+        
+        # reproduce viruses with popDensity
+        virusesNew = virusesNotDead[:]
+        if popDensity < 1:
+            for virus in virusesNotDead:
+                a = virus.reproduce(popDensity)
+                virusesNew.append(a)
+        
+        # Update viruses in patient
+        self.viruses = []
+        self.viruses = virusesNew
+        
+        # returns updated virus population (an integer)
+        print(len(virusesNotDead))
+        print(len(self.viruses))
+        return self.getTotalPop()
+
+## Testcase
+SV = SimpleVirus(0.9, 0.9)
+print(SV)
+print(SV.getMaxBirthProb())
+print(SV.getClearProb())
+print(SV.doesClear())
+S2 = SV.reproduce(0.9)
+print(S2)
+
+print("patient: ")
+P1 = Patient([SV, S2], 100)
+print(P1.getViruses())
+print(P1.getMaxPop())
+print(P1.getTotalPop())
+print("update: ")
+P1.update()
+print("Updated P1")
+print(P1.getViruses())
+print(P1.getMaxPop())
+print(P1.getTotalPop())
 
 
-
-        # modifies virus population
-        # returns updated virus population
-
-
-
-#
 # PROBLEM 2
 #
 def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
