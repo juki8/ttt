@@ -2,8 +2,8 @@
 
 import random
 random.seed(0)
-import pylab as plt
-from collections import defaultdict
+import pylab 
+#import time
 
 ''' 
 Begin helper code
@@ -209,6 +209,7 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
     """
 
     ## Settings, counters etc.
+#    time1 = time.time()
     timesteps = 300
     
     # initiate viruses
@@ -216,10 +217,14 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
     for i in range(numViruses):
         a = SimpleVirus(maxBirthProb, clearProb)
         virusesStart.append(a)
-    
+
     ##  loop for numTrials trials
-#    results = []
-    resultsDic = defaultdict(int)
+    # generate 0-List
+    results = []
+    for i in range (timesteps):
+        results.append(0)
+#    print(results)
+    
     for i in range(numTrials):
         # initiate patient
         p = Patient(virusesStart, maxPop)
@@ -227,30 +232,30 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
         # one trial with dict structure
         for i in range(timesteps):
             p.update()
-            resultsDic[i] += p.getTotalPop()
+            results[i] += p.getTotalPop()
 
     for i in range(timesteps):
-        resultsDic[i] = resultsDic[i] / numTrials
-    resultsDic = dict(resultsDic)
-#    print(resultsDic)
-        
-        # one trial with list structure showing results for individual trial
-#        result = []
-#        for i in range(timesteps):
-#            p.update()
-#            result.append(p.getTotalPop())
-#        results.append(result)
-
-    # plotting
-    resultsList = sorted(resultsDic.items())
-    x, y = zip(*resultsList)
-    plt.plot(x, y)
-
+        results[i] = results[i] / numTrials
+#    print(results)
+       
+    # plotting 
+    pylab.plot(results, label = "SimpleVirus")
+    pylab.title("SimpleVirus simulation")
+    pylab.xlabel("Time Steps")
+    pylab.ylabel("Average Virus Population")
+    pylab.legend(loc = "best")
+    pylab.show()
+    
+    ## time taking
+#    time2 = time.time()
+#    time_simulation = (time2-time1)
+#    print(str(time_simulation) + " s.")
+    
 ### Testcase
-#numViruses = 1
+#numViruses = 100
 #maxPop = 1000
-#maxBirthProb = 0.5
-#clearProb = 0.2
+#maxBirthProb = 0.1
+#clearProb = 0.01
 #numTrials = 5
 #simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb, numTrials)
 
