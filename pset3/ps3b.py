@@ -313,7 +313,8 @@ class ResistantVirus(SimpleVirus):
         returns: True if this virus instance is resistant to the drug, False
         otherwise.
         """
-        return self.getResistances()[drug]
+        if drug in self.resistances:
+            return self.getResistances()[drug]
 
 
     def reproduce(self, popDensity, activeDrugs):
@@ -383,22 +384,18 @@ class ResistantVirus(SimpleVirus):
                 raise NoChildException
 
 ### Testcase
-maxBirthProb = 0.9
-clearProb = 0.1 
-resistances = {'A': True, 'B': True , 'C': True} 
-mutProb = 0.1
-activeDrugs = ['A', 'B', 'C']
-popDensity = 0.1
-
-virus = ResistantVirus(0.0, 1.0, {"drug1":True, "drug2":False}, 0.0)
-
-
-RV = ResistantVirus(maxBirthProb, clearProb, resistances, mutProb)
-print(RV)
-print(RV.getResistances())
-RV = RV.reproduce(popDensity, activeDrugs)
-print(RV.getResistances())
-
+#maxBirthProb = 0.9
+#clearProb = 0.1 
+#resistances = {'A': True, 'B': True , 'C': True} 
+#mutProb = 0.1
+#activeDrugs = ['A', 'B', 'C']
+#popDensity = 0.1
+#
+#RV = ResistantVirus(maxBirthProb, clearProb, resistances, mutProb)
+#print(RV)
+#print(RV.getResistances())
+#RV = RV.reproduce(popDensity, activeDrugs)
+#print(RV.getResistances())
 
 class TreatedPatient(Patient):
     """
