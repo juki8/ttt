@@ -367,7 +367,7 @@ class TreatedPatient(Patient):
         Patient.__init__(self, viruses, maxPop)
         self.viruses = viruses
         self.maxPop = maxPop
-        self.prescription = []
+        self.prescriptions = []
 
     def addPrescription(self, newDrug):
         """
@@ -412,9 +412,9 @@ class TreatedPatient(Patient):
         """
         resistCount = 0
         for virus in self.viruses:
-            for drug in drugResist:
-                if virus.getResistances()[drug]:
-                    resistCount += 1
+            if all(drug in list(virus.getResistances().keys()) \
+                   for drug in drugResist):
+                resistCount += 1
         return resistCount
 
     def update(self):
@@ -467,20 +467,19 @@ class TreatedPatient(Patient):
 
 
 ### Testcase
-maxBirthProb = 0.9
-clearProb = 0.1 
-resistances = {'A': True, 'B': True , 'C': True} 
-mutProb = 0.1
-activeDrugs = ['A', 'B', 'C']
-popDensity = 0.1
-
-RV = ResistantVirus(maxBirthProb, clearProb, resistances, mutProb)
-print(RV)
-print(RV.getResistances())
-RV = RV.reproduce(popDensity, activeDrugs)
-print(RV.getResistances())
-
-
+#maxBirthProb = 0.9
+#clearProb = 0.1 
+#resistances = {'A': True, 'B': True , 'C': True} 
+#mutProb = 0.1
+#activeDrugs = ['A', 'B', 'C']
+#popDensity = 0.1
+#
+## viruses
+#RV = ResistantVirus(maxBirthProb, clearProb, resistances, mutProb)
+#RV1 = RV.reproduce(popDensity, activeDrugs)
+#RV2 = ResistantVirus(0.6, 0.3, {'A': True, 'B': True , 'C': False}, 0.2)
+#TP = TreatedPatient([RV, RV1, RV2], 20)
+#
 
         
 #
