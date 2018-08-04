@@ -485,5 +485,86 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
     numTrials: number of simulation runs to execute (an integer)
     
     """
+    ## Without drug
+#    time1 = time.time()
+    timesteps = 150
+    
+    # initiate viruses
+    virusesStart = []
+    for i in range(numViruses):
+        a = ResistantVirus(maxBirthProb, clearProb, resistances, mutProb)
+        virusesStart.append(a)
 
-    # TODO
+    ##  loop for numTrials trials
+    # generate 0-List
+    results = []
+    for i in range(timesteps):
+        results.append(0)
+   
+    for i in range(numTrials):
+        # initiate patient
+        p = TreatedPatient(virusesStart, maxPop)
+
+        # one trial with dict structure
+        for i in range(timesteps):
+            p.update()
+            results[i] += p.getTotalPop()
+
+    for i in range(timesteps):
+        results[i] = results[i] / numTrials
+#    print(results)
+       
+    # plotting 
+    pylab.gcf().clear()
+    pylab.plot(results, label = "Without drug") 
+    
+    ## with drug
+    # initiate viruses
+    virusesStart = []
+    for i in range(numViruses):
+        a = ResistantVirus(maxBirthProb, clearProb, resistances, mutProb)
+        virusesStart.append(a)
+
+    ##  loop for numTrials trials
+    # generate 0-List
+    results2 = []
+    for i in range(timesteps):
+        results2.append(0)
+   
+    for i in range(numTrials):
+        # initiate patient
+        p = TreatedPatient(virusesStart, maxPop)
+        p.addPrescription('guttagonol')
+
+        # one trial with dict structure
+        for i in range(timesteps):
+            p.update()
+            results2[i] += p.getTotalPop()
+
+    for i in range(timesteps):
+        results2[i] = results2[i] / numTrials
+#    print(results)
+       
+    # plotting 
+    pylab.plot(results2, label = "With drug")
+    pylab.title("ResistantVirus simulation")
+    pylab.xlabel("Time Steps")
+    pylab.ylabel("viruses")
+    pylab.legend(loc = "best")    
+    
+    pylab.show()
+
+    
+### TESTCASE
+
+#numViruses = 100
+#maxPop = 1000
+#maxBirthProb = 0.1
+#clearProb = 0.05
+#resistances = {'guttagonol': False}
+#mutProb = 0.005
+#numTrials = 1
+#
+#simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances, \
+#                   mutProb, numTrials)
+
