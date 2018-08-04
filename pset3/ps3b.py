@@ -379,14 +379,10 @@ class TreatedPatient(Patient):
 
         postcondition: The list of drugs being administered to a patient is updated
         """
+
         if newDrug not in self.prescriptions:
             self.prescriptions.append(newDrug)
-        
-#        # act on the virus population
-#        ## check for each virus if virus is resistant to newDrug
-#        for virus in self.viruses:
-#            if not virus.getResistances()[newDrug]:
-#                
+
         
     def getPrescriptions(self):
         """
@@ -410,16 +406,12 @@ class TreatedPatient(Patient):
         returns: The population of viruses (an integer) with resistances to all
         drugs in the drugResist list.
         """
-
+        
         resistCount = 0
-        for drug in drugResist:
-            for virus in self.viruses:
-                vres = virus.getResistances()
-                if drug in vres:
-                    if vres[drug] == True:
-                        resistCount += 1
+        for virus in self.viruses:
+            if all(virus.isResistantTo(drug) for drug in drugResist):
+                resistCount += 1
         return resistCount
-
 
     def update(self):
         """
@@ -469,72 +461,6 @@ class TreatedPatient(Patient):
         # returns updated virus population (an integer)
         return self.getTotalPop()
 
-### Testcase
-#maxBirthProb = 0.9
-#clearProb = 0.1 
-#resistances = {'A': True, 'B': True , 'C': True} 
-#mutProb = 0.1
-#activeDrugs = ['A', 'B', 'C']
-#popDensity = 0.1
-#
-## viruses
-#RV = ResistantVirus(maxBirthProb, clearProb, resistances, mutProb)
-#RV1 = RV.reproduce(popDensity, activeDrugs)
-#RV2 = ResistantVirus(0.6, 0.3, {'A': True, 'B': True , 'C': False}, 0.2)
-#TP = TreatedPatient([RV, RV1, RV2], 20)
-
-### Test: TreatedPatient 5        
-virus1 = ResistantVirus(1.0, 0.0, {"drug1": True}, 0.0)
-virus2 = ResistantVirus(1.0, 0.0, {"drug1": False, "drug2": True}, 0.0)
-virus3 = ResistantVirus(1.0, 0.0, {"drug1": True, "drug2": True}, 0.0)
-patient = TreatedPatient([virus1, virus2, virus3], 100)
-patient.getResistPop(['drug1'])
-patient.getResistPop(['drug2'])
-patient.getResistPop(['drug1','drug2'])
-patient.getResistPop(['drug3'])
-patient.getResistPop(['drug1', 'drug3'])
-patient.getResistPop(['drug1','drug2', 'drug3'])
-
-#Correct output:
-#virus1 = ResistantVirus(1.0, 0.0, {"drug1": True}, 0.0)
-#virus2 = ResistantVirus(1.0, 0.0, {"drug1": False, "drug2": True}, 0.0)
-#virus3 = ResistantVirus(1.0, 0.0, {"drug1": True, "drug2": True}, 0.0)
-#patient = sm.TreatedPatient([virus1, virus2, virus3], 100)
-#patient.getResistPop(['drug1']): 2
-#patient.getResistPop(['drug2']): 2
-#patient.getResistPop(['drug1','drug2']): 1
-#patient.getResistPop(['drug3']): 0
-#patient.getResistPop(['drug1', 'drug3']): 0
-#patient.getResistPop(['drug1','drug2', 'drug3']): 0
-#Test completed.
-
-###Test: TreatedPatient 6
-#Test for virus populations in TreatedPatient.
-#
-#Your output:
-#virus1 = ResistantVirus(1.0, 0.0, {"drug1": True}, 0.0)
-#virus2 = ResistantVirus(1.0, 0.0, {"drug1": False}, 0.0)
-#patient = TreatedPatient([virus1, virus2], 1000000)
-#patient.addPrescription("drug1")
-#Updating patient 5 times
-#Expect resistant population to be 2^5 +/- 10
-#Expect total population to be the resistant population plus 1
-#Total population incorrect, got: 33
-#Resistant population was: 33
-#Test completed.
-#Correct output:
-#virus1 = ResistantVirus(1.0, 0.0, {"drug1": True}, 0.0)
-#virus2 = ResistantVirus(1.0, 0.0, {"drug1": False}, 0.0)
-#patient = TreatedPatient([virus1, virus2], 1000000)
-#patient.addPrescription("drug1")
-#Updating patient 5 times
-#Expect resistant population to be 2^5 +/- 10
-#Expect total population to be the resistant population plus 1
-#Test completed.
-        
-    
-    
-#
 # PROBLEM 4
 #
 def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
